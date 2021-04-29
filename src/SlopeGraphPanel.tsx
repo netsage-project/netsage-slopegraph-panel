@@ -8,18 +8,16 @@ interface Props extends PanelProps<SlopeGraphOptions> {}
 
 export const SlopeGraphPanel: React.FC<Props> = ({ options, data, width, height, id }) => {
   let graphOptions = {
-    ...options
-  }
+    ...options,
+  };
 
   var parsedData = {};
   try {
     parsedData = parseData(data, graphOptions.numLines, graphOptions.colorPalette, graphOptions.invertColorPalette);
     console.log(parsedData);
-
   } catch (error) {
-      console.error("Parsing error : ", error);
+      console.error('Parsing error : ', error);
   }
 
   return <Canvas height={height} width={width} panelId={id} options={graphOptions} data={parsedData} />;
-
 };

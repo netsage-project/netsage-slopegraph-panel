@@ -32,25 +32,25 @@ export const plugin = new PanelPlugin<SlopeGraphOptions>(SlopeGraphPanel)
       .addColorPicker({
         path: 'headerColor',
         name: 'Header color',
-        defaultValue: 'black'
+        defaultValue: 'black',
       })
       .addSelect({
-          path: 'colorPalette',
-          name: 'Color palette',
-          settings: {
-            options: colorPalettes,
-          },
-          defaultValue: 'interpolateBlues'
-        })
+        path: 'colorPalette',
+        name: 'Color palette',
+        settings: {
+          options: colorPalettes,
+        },
+        defaultValue: 'interpolateBlues',
+      })
       .addBooleanSwitch({
         path: 'invertColorPalette',
         name: 'Invert color palette',
-        defaultValue: false
+        defaultValue: false,
       })
       .addColorPicker({
         path: 'hoverColor',
         name: 'Hover color',
-        defaultValue: 'red'
+        defaultValue: 'red',
       });
   });
 
