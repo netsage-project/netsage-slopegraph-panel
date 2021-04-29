@@ -1,7 +1,7 @@
 {
-  "name": "simple-panel",
+  "name": "netsage-slopegraph-panel",
   "version": "1.0.0",
-  "description": "Grafana Panel Plugin Template",
+  "description": "Slope Graph Panel",
   "scripts": {
     "build": "grafana-toolkit plugin:build",
     "test": "grafana-toolkit plugin:test",
@@ -10,7 +10,7 @@
     "sign": "grafana-toolkit plugin:sign",
     "start": "yarn watch"
   },
-  "author": "Grafana Labs",
+  "author": "Katrina Turner <khj@hawaii.edu> (https://katrinaturner.github.io)",
   "license": "Apache-2.0",
   "devDependencies": {
     "@grafana/data": "latest",
@@ -20,5 +20,9 @@
   },
   "engines": {
     "node": ">=14"
+  },
+  "dependencies": {
+    "d3": "^6.5.0",
+    "grafana-plugin-support": "latest"
   }
 }

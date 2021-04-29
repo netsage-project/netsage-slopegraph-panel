@@ -1,0 +1,45 @@
+div.tooltip {	
+    position: absolute;			
+    text-align: left;
+    color: black;			
+    width: 200px;					
+    height: auto;					
+    padding: 8px 8px 0px 8px;				
+    font: 12px sans-serif;		
+    background: #dde4ed;	
+    border: 5px solid white;		
+    border-radius: 8px;			
+    pointer-events: none;	
+}
+
+.header-text {
+    font-weight: bold;
+    text-align: center;
+    font-size: 14px;
+}
+
+.tick {
+    width: 150px;
+    word-wrap: break-word;
+    padding: 10px;
+}
+
+.tick text {
+    word-wrap: break-word;
+    padding: 10px;
+}
+
+#chart-area{
+	height: inherit;
+}
+.path-hover{
+    cursor: pointer;
+}
+
+.axis {
+    font-size: 13px;
+}
+
+.section-heading {
+    font-weight: bold;
+}

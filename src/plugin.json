@@ -1,13 +1,13 @@
 {
   "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
   "type": "panel",
-  "name": "Grafana Panel Plugin Template",
-  "id": "myorgid-simple-panel",
+  "name": "Slope Graph Panel",
+  "id": "netsage-slopegraph-panel",
 
   "info": {
-    "description": "Grafana Panel Plugin Template",
+    "description": "Slope Graph Panel",
     "author": {
-      "name": "Your Name"
+      "name": "Katrina Turner"
     },
     "keywords": ["panel", "template"],
     "logos": {
@@ -15,12 +15,12 @@
       "large": "img/logo.svg"
     },
     "links": [
-      {"name": "Website", "url": "https://github.com/grafana/grafana-starter-panel"},
-      {"name": "License", "url": "https://github.com/grafana/grafana-starter-panel/blob/master/LICENSE"}
+      {"name": "Website", "url": "https://github.com/katrinaturner/netsage-slope-graph-panel"},
+      {"name": "License", "url": "https://github.com/katrinaturner/netsage-slope-graph-panel/master/LICENSE"}
     ],
     "screenshots": [],
-    "version": "%VERSION%",
-    "updated": "%TODAY%"
+    "version": "0.0.1",
+    "updated": "2021-04-29"
   },
 
   "dependencies": {

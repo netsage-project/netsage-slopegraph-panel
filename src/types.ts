@@ -1,7 +1,9 @@
-type SeriesSize = 'sm' | 'md' | 'lg';
-
-export interface SimpleOptions {
-  text: string;
-  showSeriesCount: boolean;
-  seriesCountSize: SeriesSize;
+export interface SlopeGraphOptions {
+  numLines: number;
+  leftHeader: string;
+  rightHeader: string;
+  headerColor: string;
+  colorPalette: string;
+  invertColorPalette: boolean;
+  hoverColor: string;
 }
