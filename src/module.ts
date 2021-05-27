@@ -73,4 +73,5 @@ const colorPalettes = [
   { label: 'YlGn', value: 'interpolateYlGn' },
   { label: 'YlOrBr', value: 'interpolateYlOrBr' },
   { label: 'YlOrRd', value: 'interpolateYlOrRd' },
+  { label: 'NetSageBlues', value: 'customNetSage' },
 ];
