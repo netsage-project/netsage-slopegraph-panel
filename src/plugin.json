@@ -3,26 +3,38 @@
   "type": "panel",
   "name": "Slope Graph Panel",
   "id": "netsage-slopegraph-panel",
-
   "info": {
     "description": "Slope Graph Panel",
     "author": {
-      "name": "Katrina Turner"
+      "name": "Netsage"
     },
-    "keywords": ["panel", "template"],
+    "keywords": [
+      "panel",
+      "template"
+    ],
     "logos": {
       "small": "img/logo.svg",
       "large": "img/logo.svg"
     },
     "links": [
-      {"name": "Website", "url": "https://github.com/katrinaturner/netsage-slope-graph-panel"},
-      {"name": "License", "url": "https://github.com/katrinaturner/netsage-slope-graph-panel/master/LICENSE"}
+      {
+        "name": "Website",
+        "url": "https://github.com/katrinaturner/netsage-slope-graph-panel"
+      },
+      {
+        "name": "License",
+        "url": "https://github.com/katrinaturner/netsage-slope-graph-panel/master/LICENSE"
+      }
     ],
-    "screenshots": [],
-    "version": "0.0.1",
-    "updated": "2021-04-29"
+    "screenshots": [
+      {
+        "name": "slopegraph-example",
+        "path": "img/slopegraph.png"
+      }
+    ],
+    "version": "%VERSION%",
+    "updated": "%TODAY%"
   },
-
   "dependencies": {
     "grafanaDependency": ">=7.0.0",
     "plugins": []

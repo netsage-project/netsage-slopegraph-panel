@@ -1,44 +1,20 @@
-# Grafana Panel Plugin Template
+# Slope Graph Panel
 
-[![Build](https://github.com/grafana/grafana-starter-panel/workflows/CI/badge.svg)](https://github.com/grafana/grafana-starter-panel/actions?query=workflow%3A%22CI%22)
+This panel produces a slope graph of pairs produced by the query.  It automatically sorts them in descending order by value. This type of slope graph is most useful for looking at the relationship between two categories.
 
-This template is a starting point for building Grafana Panel Plugins in Grafana 7.0+
 
-## What is Grafana Panel Plugin?
+## How it works
 
-Panels are the building blocks of Grafana. They allow you to visualize data in different ways. While Grafana has several types of panels already built-in, you can also build your own panel, to add support for other visualizations.
+The Slope Graph Panel requires two columns of data a start and end for each path. 
 
-For more information about panels, refer to the documentation on [Panels](https://grafana.com/docs/grafana/latest/features/panels/panels/)
+![](https://github.com/netsage-project/netsage-slopegraph-panel/blob/master/src/img/slopegraph.png?raw=true)
 
-## Getting started
+#### Variables
+The left axis will be drawn using the labels from the first column of data and the right will be drawn with the second column.
+The **Number of lines to display** variable in the options panel allows you to display LESS data than you queried.  For example, if you wanted to show only the top 10 pairs of a set of data, you can query a large set, but only display the top 10 lines.  The panel will always sort by the metric value selected and display the top N lines as chosen.
 
-1. Install dependencies
+The **Left column header** and **Right column header** will display at the top of the left and right axis and can be left blank if you do not want axis labels.  **Header color** sets the font color of these labels.
 
-   ```bash
-   yarn install
-   ```
+The **Color palette** variable allows you to choose the color palette to color the paths.  The panel chooses the color from the palette on a scale proportionate to the values returned by the query.  **Invert Color Palette** inverses the order of the colors in the palette.
 
-2. Build plugin in development mode or run in watch mode
-
-   ```bash
-   yarn dev
-   ```
-
-   or
-
-   ```bash
-   yarn watch
-   ```
-
-3. Build plugin in production mode
-
-   ```bash
-   yarn build
-   ```
-
-## Learn more
-
-- [Build a panel plugin tutorial](https://grafana.com/tutorials/build-a-panel-plugin)
-- [Grafana documentation](https://grafana.com/docs/)
-- [Grafana Tutorials](https://grafana.com/tutorials/) - Grafana Tutorials are step-by-step guides that help you make the most of Grafana
-- [Grafana UI Library](https://developers.grafana.com/ui) - UI components to help you build interfaces using Grafana Design System
+Lastly, **Hover color** allows you to set the color the path will turn when hovered over with a mouse.
