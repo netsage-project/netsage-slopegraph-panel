@@ -2,6 +2,7 @@
   "name": "netsage-slopegraph-panel",
   "version": "1.0.0",
   "description": "Slope Graph Panel",
+  "repository": "https://github.com/netsage-project/netsage-slopegraph-panel",
   "scripts": {
     "build": "grafana-toolkit plugin:build",
     "test": "grafana-toolkit plugin:test",
@@ -10,7 +11,8 @@
     "sign": "grafana-toolkit plugin:sign",
     "start": "yarn watch"
   },
-  "author": "Katrina Turner <khj@hawaii.edu> (https://katrinaturner.github.io)",
+  "author": "Netsage",
+  "email": "khturner2@es.net",
   "license": "Apache-2.0",
   "devDependencies": {
     "@grafana/data": "latest",
