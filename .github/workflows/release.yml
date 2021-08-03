@@ -78,7 +78,7 @@ jobs:
       - name: Sign plugin
         run: yarn sign
         env:
-          GRAFANA_API_KEY: ${{ secrets.GRAFANA_API_KEY }} # Requires a Grafana API key from Grafana.com.
+          GRAFANA_API_KEY: eyJrIjoiNDNkZWFjNjYzYzcwOGYxOWFmY2ZiM2ZmOTFiMGRlOTQ5YTdhMDg2MiIsIm4iOiJwdWJsaWMtcGx1Z2lucyIsImlkIjo1MjQyMjl9 # Requires a Grafana API key from Grafana.com.
 
       - name: Get plugin metadata
         id: metadata
