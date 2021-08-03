@@ -1,3 +1,7 @@
+[![CI](https://github.com/netsage-project/netsage-slopegraph-panel/actions/workflows/ci.yml/badge.svg)](https://github.com/netsage-project/netsage-slopegraph-panel/actions/workflows/ci.yml)
+
+[![Release](https://github.com/netsage-project/netsage-slopegraph-panel/actions/workflows/release.yml/badge.svg)](https://github.com/netsage-project/netsage-slopegraph-panel/actions/workflows/release.yml)
+
 # Slope Graph Panel
 
 This panel produces a slope graph of pairs produced by the query.  It automatically sorts them in descending order by value. This type of slope graph is most useful for looking at the relationship between two categories.
