@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import SlopeGraph from './RenderGraph.js';
 import '../css/styles.css';
 
-export const Canvas = props => {
+export const Canvas = (props) => {
   useEffect(() => {
     const id = props.panelId;
     const chart = new SlopeGraph('Chart_' + id);

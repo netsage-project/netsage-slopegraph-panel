@@ -12,7 +12,7 @@ export const plugin = new PanelPlugin<SlopeGraphOptions>(SlopeGraphPanel)
   .useFieldConfig({
     standardOptions: buildStandardOptions(),
   })
-  .setPanelOptions(builder => {
+  .setPanelOptions((builder) => {
     return builder
       .addNumberInput({
         path: 'numLines',
