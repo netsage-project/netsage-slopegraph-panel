@@ -8,20 +8,21 @@ Hash: SHA512
   "signedByOrg": "netsage",
   "signedByOrgName": "netsage",
   "rootUrls": [
+    "https://dashboard.stardust.es.net/",
     "http://localhost:3000/",
     "http://localhost:3002/",
-    "https://dashboard.stardust.es.net/"
+    "https://public.stardust.es.net/"
   ],
   "plugin": "netsage-slopegraph-panel",
   "version": "1.0.1",
-  "time": 1630691414356,
+  "time": 1632507111864,
   "keyId": "7e4d0c6a708866e7",
   "files": {
     "LICENSE": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
     "CHANGELOG.md": "aaa78be4710ef41d56ddab1edbd180ef9f9adfea2f293109aae925dc33a1b9b3",
     "module.js.LICENSE.txt": "0d8f66cd4afb566cb5b7e1540c68f43b939d3eba12ace290f18abc4f4cb53ed0",
     "module.js.map": "6d2a7fc1a2980f9d2030aa2dadd4fd3d1bfb5186e7c92e5fa659a9382c11f5fd",
-    "plugin.json": "3c2496106d7dbd186f644ca165a236858237a324b827ae4d8cf2ebc627c74b2e",
+    "plugin.json": "f1cd096ce13ffe163c3796fae84c358b634ede6f34fa5a66316b9366767fe6a7",
     "README.md": "2e6886583701c9c247586f7be98a7c66d70403c93d09d8f67c1a8809df58d55a",
     "img/slopegraph.png": "6522086b5717c31d334a4562bbec047e3d0050ee81ac081f4b2ab4d12e6ab9f1",
     "img/logo.svg": "1defc6f7e585c67657bcfd8fddc599ee7dfa82f8674413f49fa274c2cd453ec6",
@@ -32,9 +33,9 @@ Hash: SHA512
 Version: OpenPGP.js v4.10.1
 Comment: https://openpgpjs.org
 
-wqEEARMKAAYFAmEyYFYACgkQfk0ManCIZueVmwIJAdFlTRGigihRrSjo0J4u
-FX6fVdZI7K+PIFSCxIX1708L9OQN8qcAgRPrtYIyR4n3bSoQeddJh1XDsd3R
-dTD8bXWaAgEBnb4x0XBvIWx/Js/KiuadEb0fiJOgYVruxcKQAFQpPE0pIEMz
-OwQDuFBlU6scV2YJTsPLKY4Zm943pbqcUNpVcg==
-=lOV2
+wqIEARMKAAYFAmFOFOgACgkQfk0ManCIZudW8AIJAVPXCmefbtUJGOeusrAx
+pWv+7Olq+o78UDpsSKts8pqy4mKWOPxhjIBBXA3pd8/Vs+lYic7g7usJV622
+MYv/3iDoAgkB0rsYM6nYX2Yo85PomXfXnP36cfsKm3q422rYOCkzdODxfVvH
+NpvsFFS1HmXYdwxO5IDWKO5mDB29i82+yqRED7k=
+=1fVZ
 -----END PGP SIGNATURE-----
