@@ -15,7 +15,7 @@ Hash: SHA512
   ],
   "plugin": "netsage-slopegraph-panel",
   "version": "1.0.1",
-  "time": 1632507111864,
+  "time": 1632508649673,
   "keyId": "7e4d0c6a708866e7",
   "files": {
     "LICENSE": "b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1",
@@ -33,9 +33,9 @@ Hash: SHA512
 Version: OpenPGP.js v4.10.1
 Comment: https://openpgpjs.org
 
-wqIEARMKAAYFAmFOFOgACgkQfk0ManCIZudW8AIJAVPXCmefbtUJGOeusrAx
-pWv+7Olq+o78UDpsSKts8pqy4mKWOPxhjIBBXA3pd8/Vs+lYic7g7usJV622
-MYv/3iDoAgkB0rsYM6nYX2Yo85PomXfXnP36cfsKm3q422rYOCkzdODxfVvH
-NpvsFFS1HmXYdwxO5IDWKO5mDB29i82+yqRED7k=
-=1fVZ
+wqAEARMKAAYFAmFOGukACgkQfk0ManCIZuc2fAIIspOVF/d1T9fdANJV8DxD
+iobA5kYehisSGSKBDy2gwX0P1+MUtAsGW85rOiQ/Nonh42fsnezsr+ZdY3jf
+fHQ4+6oCCKNZXpxtsCkVZiiBq8eumLHrlkHU1dDjtPY0dJpyB19t8OKrRugg
+AfNsbF0MPK0V8FnM1sqoW2m+gqXgCGYMBuTk
+=AhFO
 -----END PGP SIGNATURE-----
