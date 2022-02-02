@@ -1,3 +1,5 @@
+import { makeColorPalette } from 'colorPalette';
+
 /**
  *
  * @param data - the data returned from Grafana panel query
@@ -5,7 +7,7 @@
  * @returns parsed data for RenderGraph.js to use to render slope graph
  */
 
-export function parseData(data, numPairs) {
+export function parseData(data, numPairs, colorPalette, invertColorPalette) {
   // Find the number field and use for values.
   const valueField = data.series.map(series => series.fields.find(field => field.type === 'number'));
   let values = [];
@@ -77,6 +79,39 @@ export function parseData(data, numPairs) {
   // tick marks at leftKeys & rightKeys,
   let maxValue = topPairs[0][2];
   let minValue = topPairs[topPairs.length - 1][2];
+
+  // Custom NetSage Blues
+  if (colorPalette == "customNetSage") {
+    let alpha = 0.6
+    let color_palette = [
+      "rgba(196, 199, 254, " + alpha + ")",
+      "rgba(171, 176, 253, " + alpha + ")",
+      "rgba(146, 152, 248, " + alpha + ")",
+      "rgba(122, 130, 246, " + alpha + ")",
+      "rgba(106, 115, 245, " + alpha + ")",
+      "rgba(85, 95, 244, " + alpha + ")",
+      "rgba(56, 67, 241, " + alpha + ")",
+      "rgba(23, 36, 238, " + alpha + ")",
+      "rgba(2, 14, 202, " + alpha + ")",
+      "rgba(3, 12, 158, " + alpha + ")"]
+
+    let max_value = topPairs[0].coords[0].meta.value
+    for (var i = 0; i < topPairs.length; i++) {
+      let color_scale = Math.ceil(topPairs[i].coords[0].meta.value / max_value * 10)
+      if (color_scale > 0) {
+        color_scale--;
+      }
+      // add color to coords
+      topPairs[i].coords[0].meta.color = color_palette[color_scale];
+    }
+  } else {
+    let colorScale = invertColorPalette
+        ? makeColorPalette(colorPalette, maxValue, minValue) : makeColorPalette(colorPalette, minValue, maxValue);
+    for (var i = 0; i < topPairs.length; i++) {
+      // add color to coords
+      topPairs[i].coords[0].meta.color = colorScale(topPairs[i].coords[0].meta.value)
+    }
+  }
 
   let objToReturn = {
     leftKeys: leftKeys,
