@@ -13,7 +13,7 @@ export const SlopeGraphPanel: React.FC<Props> = ({ options, data, width, height,
 
   var parsedData = {};
   try {
-    parsedData = parseData(data, graphOptions.numLines);
+    parsedData = parseData(data, graphOptions.numLines, graphOptions.colorPalette, graphOptions.invertColorPalette);
   } catch (error) {
     console.error('Parsing error : ', error);
   }
