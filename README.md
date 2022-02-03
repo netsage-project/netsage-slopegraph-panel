@@ -22,3 +22,12 @@ The **Left column header** and **Right column header** will display at the top o
 The **Color palette** variable allows you to choose the color palette to color the paths.  The panel chooses the color from the palette on a scale proportionate to the values returned by the query.  **Invert Color Palette** inverses the order of the colors in the palette.
 
 Lastly, **Hover color** allows you to set the color the path will turn when hovered over with a mouse.
+
+## Building Instructions
+
+To build the code, Docker needs to be installed
+
+1. `docker-compose build`
+2. `docker-compose up --abort-on-container-exit`
+
+This will generate the built binaries in the dist directory
