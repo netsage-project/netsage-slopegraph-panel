@@ -1,0 +1,42 @@
+{
+  "$schema": "https://raw.githubusercontent.com/grafana/grafana/master/docs/sources/developers/plugins/plugin.schema.json",
+  "type": "panel",
+  "name": "Slope Graph Panel",
+  "id": "netsage-slopegraph-panel",
+  "info": {
+    "description": "Slope Graph Panel",
+    "author": {
+      "name": "Netsage"
+    },
+    "keywords": [
+      "panel",
+      "template"
+    ],
+    "logos": {
+      "small": "img/logo.svg",
+      "large": "img/logo.svg"
+    },
+    "links": [
+      {
+        "name": "Website",
+        "url": "https://github.com/netsage-project/netsage-slopegraph-panel"
+      },
+      {
+        "name": "License",
+        "url": "https://github.com/netsage-project/netsage-slopegraph-panel/blob/master/LICENSE 2"
+      }
+    ],
+    "screenshots": [
+      {
+        "name": "slopegraph-example",
+        "path": "img/slopegraph.png"
+      }
+    ],
+    "version": "1.0.3",
+    "updated": "2022-06-24"
+  },
+  "dependencies": {
+    "grafanaDependency": ">=7.0.0",
+    "plugins": []
+  }
+}
