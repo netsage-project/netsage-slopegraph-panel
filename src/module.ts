@@ -34,19 +34,6 @@ export const plugin = new PanelPlugin<SlopeGraphOptions>(SlopeGraphPanel)
         name: 'Header color',
         defaultValue: 'black',
       })
-      .addSelect({
-        path: 'colorPalette',
-        name: 'Color palette',
-        settings: {
-          options: colorPalettes,
-        },
-        defaultValue: 'interpolateBlues',
-      })
-      .addBooleanSwitch({
-        path: 'invertColorPalette',
-        name: 'Invert color palette',
-        defaultValue: false,
-      })
       .addColorPicker({
         path: 'hoverColor',
         name: 'Hover color',
@@ -54,24 +41,3 @@ export const plugin = new PanelPlugin<SlopeGraphOptions>(SlopeGraphPanel)
       });
   });
 
-const colorPalettes = [
-  { label: 'Blues', value: 'interpolateBlues' },
-  { label: 'Greens', value: 'interpolateGreens' },
-  { label: 'Greys', value: 'interpolateGreys' },
-  { label: 'Oranges', value: 'interpolateOranges' },
-  { label: 'Purples', value: 'interpolatePurples' },
-  { label: 'Reds', value: 'interpolateReds' },
-  { label: 'BuGn', value: 'interpolateBuGn' },
-  { label: 'BuPu', value: 'interpolateBuPu' },
-  { label: 'GnBu', value: 'interpolateGnBu' },
-  { label: 'OrRd', value: 'interpolateOrRd' },
-  { label: 'PuBuGn', value: 'interpolatePuBuGn' },
-  { label: 'PuBu', value: 'interpolatePuBu' },
-  { label: 'PuRd', value: 'interpolatePuRd' },
-  { label: 'RdPu', value: 'interpolateRdPu' },
-  { label: 'YlGnBu', value: 'interpolateYlGnBu' },
-  { label: 'YlGn', value: 'interpolateYlGn' },
-  { label: 'YlOrBr', value: 'interpolateYlOrBr' },
-  { label: 'YlOrRd', value: 'interpolateYlOrRd' },
-  { label: 'NetSageBlues', value: 'customNetSage' },
-];
