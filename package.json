@@ -1,6 +1,6 @@
 {
   "name": "netsage-slopegraph-panel",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Slope Graph Panel",
   "repository": "https://github.com/netsage-project/netsage-slopegraph-panel",
   "scripts": {
