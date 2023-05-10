@@ -4,4 +4,6 @@ export interface SlopeGraphOptions {
   rightHeader: string;
   headerColor: string;
   hoverColor: string;
+  txtLength: number;
+  fontSize: number;
 }

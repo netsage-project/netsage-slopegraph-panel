@@ -29,10 +29,21 @@ export const plugin = new PanelPlugin<SlopeGraphOptions>(SlopeGraphPanel)
         name: 'Right column header',
         defaultValue: 'Right Title',
       })
+      .addNumberInput({
+        path: 'txtLength',
+        name: 'Label Text Length',
+        description: 'Labels longer than this will be truncated',
+        defaultValue: 20,
+      })
+      .addNumberInput({
+        path: 'fontSize',
+        name: 'Label Font Size',
+        defaultValue: 12,
+      })
       .addColorPicker({
         path: 'headerColor',
         name: 'Header color',
-        defaultValue: 'black',
+        defaultValue: 'text',
       })
       .addColorPicker({
         path: 'hoverColor',

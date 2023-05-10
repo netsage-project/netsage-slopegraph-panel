@@ -13,7 +13,7 @@ export default class SlopeGraph {
    * @param hoverColor - the color the lines will change to when hovering, set in options panel
    */
 
-  renderGraph(parsedData, header1, header2, headerColor, hoverColor) {
+  renderGraph(parsedData, options, theme) {
     if (!parsedData) {
       return;
     }
@@ -27,10 +27,18 @@ export default class SlopeGraph {
       .remove();
     // ----------------------------------------------------------
 
-    let topPairs = parsedData.topPairs;
-    let leftKeys = parsedData.leftKeys;
-    let rightKeys = parsedData.rightKeys;
-    let alpha = parsedData.alpha;
+    // ------------- Variables ----------------- //
+    const topPairs = parsedData.topPairs;
+    const leftKeys = parsedData.leftKeys;
+    const rightKeys = parsedData.rightKeys;
+    const alpha = parsedData.alpha;
+    const header1 = options.header1;
+    const header2 = options.header2;
+    const headerColor = theme.visualization.getColorByName(options.headerColor);
+    const hoverColor = theme.visualization.getColorByName(options.hoverColor);
+    const txtLength = options.txtLength;
+    const fontSize = options.fontSize;
+    const sideMargin = txtLength * fontSize * 0.75 + 15;
 
     //let min_value = topPairs[topPairs.length - 1][2]
     //let max_value = topPairs[0][2]
@@ -41,7 +49,7 @@ export default class SlopeGraph {
     let panelHeight = document.getElementById(this.containerID).offsetHeight;
 
     // set the dimensions and margins of the graph
-    var margin = { top: 50, right: 400, bottom: 25, left: 400 },
+    var margin = { top: 50, right: sideMargin, bottom: 25, left: sideMargin },
       width = panelWidth - margin.left - margin.right,
       height = panelHeight - margin.top - margin.bottom;
 
@@ -54,41 +62,13 @@ export default class SlopeGraph {
       .append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-    // function to wrap text!
-    function wrap(text, width) {
-      text.each(function() {
-        var text = d3.select(this),
-          words = text
-            .text()
-            .split(/\s+/)
-            .reverse(),
-          word,
-          line = [],
-          lineNumber = 0,
-          lineHeight = 1.1, // ems
-          y = text.attr('y'),
-          dy = parseFloat(text.attr('dy')),
-          tspan = text
-            .text(null)
-            .append('tspan')
-            .attr('x', 0)
-            .attr('y', y)
-            .attr('dy', dy + 'em');
-        while ((word = words.pop())) {
-          line.push(word);
-          tspan.text(line.join(' '));
-          if (tspan.node().getComputedTextLength() > width) {
-            line.pop();
-            tspan.text(line.join(' '));
-            line = [word];
-            tspan = text
-              .append('tspan')
-              .attr('x', 0)
-              .attr('y', y)
-              .attr('dy', ++lineNumber * lineHeight + dy + 'em')
-              .text(word);
-          }
+    function truncateLabel(text, width) {
+      text.each(function () {
+        var label = d3.select(this).text();
+        if (label.length > width) {
+          label = label.slice(0, width) + '...';
         }
+        d3.select(this).text(label);
       });
     }
 
@@ -132,7 +112,8 @@ export default class SlopeGraph {
       .attr('class', 'axis')
       .attr('margin', 10)
       .selectAll('.tick text')
-      .call(wrap, margin.left - 50)
+      .call(truncateLabel, txtLength)
+      .attr('font-size', 'fontSize')
       .attr('transform', 'translate(' + -10 + ',0)');
 
     svg
@@ -141,7 +122,8 @@ export default class SlopeGraph {
       .call(rightAxis)
       .attr('class', 'axis')
       .selectAll('.tick text')
-      .call(wrap, margin.right - 50)
+      .call(truncateLabel, txtLength)
+      .attr('font-size', 'fontSize')
       .attr('transform', 'translate(' + 10 + ',0)');
 
     // scale for width of lines
