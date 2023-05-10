@@ -29,23 +29,21 @@ export const plugin = new PanelPlugin<SlopeGraphOptions>(SlopeGraphPanel)
         name: 'Right column header',
         defaultValue: 'Right Title',
       })
+      .addNumberInput({
+        path: 'txtLength',
+        name: 'Label Text Length',
+        description: 'Labels longer than this will be truncated',
+        defaultValue: 20,
+      })
+      .addNumberInput({
+        path: 'fontSize',
+        name: 'Label Font Size',
+        defaultValue: 12,
+      })
       .addColorPicker({
         path: 'headerColor',
         name: 'Header color',
-        defaultValue: 'black',
-      })
-      .addSelect({
-        path: 'colorPalette',
-        name: 'Color palette',
-        settings: {
-          options: colorPalettes,
-        },
-        defaultValue: 'interpolateBlues',
-      })
-      .addBooleanSwitch({
-        path: 'invertColorPalette',
-        name: 'Invert color palette',
-        defaultValue: false,
+        defaultValue: 'text',
       })
       .addColorPicker({
         path: 'hoverColor',
@@ -54,24 +52,3 @@ export const plugin = new PanelPlugin<SlopeGraphOptions>(SlopeGraphPanel)
       });
   });
 
-const colorPalettes = [
-  { label: 'Blues', value: 'interpolateBlues' },
-  { label: 'Greens', value: 'interpolateGreens' },
-  { label: 'Greys', value: 'interpolateGreys' },
-  { label: 'Oranges', value: 'interpolateOranges' },
-  { label: 'Purples', value: 'interpolatePurples' },
-  { label: 'Reds', value: 'interpolateReds' },
-  { label: 'BuGn', value: 'interpolateBuGn' },
-  { label: 'BuPu', value: 'interpolateBuPu' },
-  { label: 'GnBu', value: 'interpolateGnBu' },
-  { label: 'OrRd', value: 'interpolateOrRd' },
-  { label: 'PuBuGn', value: 'interpolatePuBuGn' },
-  { label: 'PuBu', value: 'interpolatePuBu' },
-  { label: 'PuRd', value: 'interpolatePuRd' },
-  { label: 'RdPu', value: 'interpolateRdPu' },
-  { label: 'YlGnBu', value: 'interpolateYlGnBu' },
-  { label: 'YlGn', value: 'interpolateYlGn' },
-  { label: 'YlOrBr', value: 'interpolateYlOrBr' },
-  { label: 'YlOrRd', value: 'interpolateYlOrRd' },
-  { label: 'NetSageBlues', value: 'customNetSage' },
-];

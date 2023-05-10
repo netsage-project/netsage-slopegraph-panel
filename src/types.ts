@@ -3,7 +3,7 @@ export interface SlopeGraphOptions {
   leftHeader: string;
   rightHeader: string;
   headerColor: string;
-  colorPalette: string;
-  invertColorPalette: boolean;
   hoverColor: string;
+  txtLength: number;
+  fontSize: number;
 }

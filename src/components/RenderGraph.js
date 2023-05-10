@@ -13,7 +13,7 @@ export default class SlopeGraph {
    * @param hoverColor - the color the lines will change to when hovering, set in options panel
    */
 
-  renderGraph(parsedData, header1, header2, headerColor, hoverColor) {
+  renderGraph(parsedData, options, theme) {
     if (!parsedData) {
       return;
     }
@@ -27,26 +27,34 @@ export default class SlopeGraph {
       .remove();
     // ----------------------------------------------------------
 
-    let topPairs = parsedData.topPairs;
-    let leftKeys = parsedData.leftKeys;
-    let rightKeys = parsedData.rightKeys;
-    let alpha = parsedData.alpha;
+    // ------------- Variables ----------------- //
+    const topPairs = parsedData.topPairs;
+    const leftKeys = parsedData.leftKeys;
+    const rightKeys = parsedData.rightKeys;
+    const alpha = parsedData.alpha;
+    const header1 = options.leftHeader;
+    const header2 = options.rightHeader;
+    const headerColor = theme.visualization.getColorByName(options.headerColor);
+    const hoverColor = theme.visualization.getColorByName(options.hoverColor);
+    const txtLength = options.txtLength;
+    const fontSize = options.fontSize;
+    const sideMargin = txtLength * fontSize * 0.75 + 15;
 
     //let min_value = topPairs[topPairs.length - 1][2]
     //let max_value = topPairs[0][2]
 
-    console.log('rendering Graph...');
+    console.log(options);
 
     let panelWidth = document.getElementById(this.containerID).offsetWidth;
     let panelHeight = document.getElementById(this.containerID).offsetHeight;
 
     // set the dimensions and margins of the graph
-    var margin = { top: 50, right: 400, bottom: 25, left: 400 },
+    const margin = { top: 50, right: sideMargin, bottom: 25, left: sideMargin },
       width = panelWidth - margin.left - margin.right,
       height = panelHeight - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
-    var svg = d3
+    const svg = d3
       .select('#' + this.containerID)
       .append('svg')
       .attr('width', width + margin.left + margin.right)
@@ -54,75 +62,44 @@ export default class SlopeGraph {
       .append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-    // function to wrap text!
-    function wrap(text, width) {
-      text.each(function() {
-        var text = d3.select(this),
-          words = text
-            .text()
-            .split(/\s+/)
-            .reverse(),
-          word,
-          line = [],
-          lineNumber = 0,
-          lineHeight = 1.1, // ems
-          y = text.attr('y'),
-          dy = parseFloat(text.attr('dy')),
-          tspan = text
-            .text(null)
-            .append('tspan')
-            .attr('x', 0)
-            .attr('y', y)
-            .attr('dy', dy + 'em');
-        while ((word = words.pop())) {
-          line.push(word);
-          tspan.text(line.join(' '));
-          if (tspan.node().getComputedTextLength() > width) {
-            line.pop();
-            tspan.text(line.join(' '));
-            line = [word];
-            tspan = text
-              .append('tspan')
-              .attr('x', 0)
-              .attr('y', y)
-              .attr('dy', ++lineNumber * lineHeight + dy + 'em')
-              .text(word);
-          }
+    function truncateLabel(text, width) {
+      text.each(function () {
+        let label = d3.select(this).text();
+        if (label.length > width) {
+          label = label.slice(0, width) + '...';
         }
+        d3.select(this).text(label);
       });
     }
 
     // Add X scale
-    var x = d3
-      .scaleLinear()
-      .domain([0, 1])
-      .range([0, width]);
+    const x = d3.scaleLinear().domain([0, 1]).range([0, width]);
 
     // y scales
-    var yl = d3
+    const yl = d3
       .scaleLinear()
       .domain([0, leftKeys.length - 1])
       .range([0, height]);
 
-    var yr = d3
+    const yr = d3
       .scaleLinear()
       .domain([0, rightKeys.length - 1])
       .range([0, height]);
 
     // Add Y axes
-    var leftAxis = d3
+    const leftAxis = d3
       .axisLeft(yl)
       .tickSize(5)
       .ticks(leftKeys.length)
-      .tickFormat(d => {
+      .tickFormat((d) => {
         return leftKeys[d];
       });
 
-    var rightAxis = d3
+    const rightAxis = d3
       .axisRight(yr)
       .tickSize(5)
       .ticks(rightKeys.length)
-      .tickFormat(d => {
+      .tickFormat((d) => {
         return rightKeys[d];
       });
 
@@ -132,7 +109,8 @@ export default class SlopeGraph {
       .attr('class', 'axis')
       .attr('margin', 10)
       .selectAll('.tick text')
-      .call(wrap, margin.left - 50)
+      .call(truncateLabel, txtLength)
+      .attr('font-size', 'fontSize')
       .attr('transform', 'translate(' + -10 + ',0)');
 
     svg
@@ -141,46 +119,47 @@ export default class SlopeGraph {
       .call(rightAxis)
       .attr('class', 'axis')
       .selectAll('.tick text')
-      .call(wrap, margin.right - 50)
+      .call(truncateLabel, txtLength)
+      .attr('font-size', 'fontSize')
       .attr('transform', 'translate(' + 10 + ',0)');
 
     // scale for width of lines
-    var w = d3
+    const w = d3
       .scaleLinear()
       .domain([topPairs[topPairs.length - 1][2], topPairs[0][2]])
       .range([3, 15]);
 
-    var div = d3
+    const div = d3
       .select('body')
       .append('div')
       .attr('class', 'tooltip')
-      .style('opacity', 0);
+      .style('opacity', 0)
+      .style('background-color', theme.colors.background.primary)
+      .style('font-family', theme.typography.fontFamily.sansSerif)
+      .style('color', theme.colors.text.primary)
+      .style('box-shadow', '3px 3px 6px lightgray')
+      .style('padding', '5px');
 
     // Add the lines
-    topPairs.forEach(function(element) {
-      var value = element[2];
+    topPairs.forEach(function (element) {
+      let value = element[2];
 
       svg
         .append('path')
         .datum(element.coords)
         .attr('fill', 'none')
-        .attr('stroke', function(d) {
+        .attr('stroke', function (d) {
           return d[0].meta.color;
         })
-        //() => {
-        //     var alpha = 0.7; // w(element[2]) / 5;
-        //     var color = "rgba(51, 102, 255," + alpha + ")";
-        //     return color;
-        // })
         .attr('stroke-width', 8) // w(element[2]))
         .attr(
           'd',
           d3
             .line()
-            .x(function(d) {
+            .x(function (d) {
               return x(d.x);
             })
-            .y(function(d) {
+            .y(function (d) {
               if (d.x == 0) {
                 return yl(d.y);
               } else {
@@ -188,38 +167,22 @@ export default class SlopeGraph {
               }
             })
         )
-        .on('mouseover', function(d) {
-          d3.select(this)
-            .attr('stroke', hoverColor)
-            .attr('class', 'path-hover');
+        .on('mouseover', function (event, d) {
+          d3.select(this).attr('stroke', hoverColor).attr('class', 'path-hover');
+          div.transition().duration(200).style('opacity', 0.9);
+          div.html(() => {
+            console.log(event);
+            let text = `<b> ${header1}:</b> ${d[0].meta.label0} <br>
+                <b> ${header2}:</b> ${d[0].meta.label1} <br>
+                ${d[0].meta.displayValue.text} ${d[0].meta.displayValue.suffix ? d[0].meta.displayValue.suffix : ''}`;
+            return text;
+          });
           div
-            .transition()
-            .duration(200)
-            .style('opacity', 0.9);
-          div
-            .html(() => {
-              var text =
-                '<p><b>' +
-                header1 +
-                ': </b> ' +
-                d[0].meta.label0 +
-                '</p><p><b>' +
-                header2 +
-                ': </b> ' +
-                d[0].meta.label1 +
-                '</p><p>' +
-                d[0].meta.displayValue.text +
-                (d[0].meta.displayValue.suffix ? d[0].meta.displayValue.suffix : '');
-              return text;
-            })
-            .style('left', d3.event.pageX + 'px')
-            .style('top', d3.event.pageY - 28 + 'px');
+            .style('left', (event.pageX + 15) + 'px')
+            .style('top', (event.pageY - 10) + 'px');
         })
-        .on('mouseout', function(d) {
-          div
-            .transition()
-            .duration(500)
-            .style('opacity', 0);
+        .on('mouseout', function (event, d) {
+          div.transition().duration(500).style('opacity', 0).attr('transform', 'translate(0, 0)');
           d3.select(this).attr('stroke', () => {
             return d[0].meta.color;
           });
