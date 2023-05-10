@@ -49,12 +49,12 @@ export default class SlopeGraph {
     let panelHeight = document.getElementById(this.containerID).offsetHeight;
 
     // set the dimensions and margins of the graph
-    var margin = { top: 50, right: sideMargin, bottom: 25, left: sideMargin },
+    const margin = { top: 50, right: sideMargin, bottom: 25, left: sideMargin },
       width = panelWidth - margin.left - margin.right,
       height = panelHeight - margin.top - margin.bottom;
 
     // append the svg object to the body of the page
-    var svg = d3
+    const svg = d3
       .select('#' + this.containerID)
       .append('svg')
       .attr('width', width + margin.left + margin.right)
@@ -64,7 +64,7 @@ export default class SlopeGraph {
 
     function truncateLabel(text, width) {
       text.each(function () {
-        var label = d3.select(this).text();
+        let label = d3.select(this).text();
         if (label.length > width) {
           label = label.slice(0, width) + '...';
         }
@@ -73,21 +73,21 @@ export default class SlopeGraph {
     }
 
     // Add X scale
-    var x = d3.scaleLinear().domain([0, 1]).range([0, width]);
+    const x = d3.scaleLinear().domain([0, 1]).range([0, width]);
 
     // y scales
-    var yl = d3
+    const yl = d3
       .scaleLinear()
       .domain([0, leftKeys.length - 1])
       .range([0, height]);
 
-    var yr = d3
+    const yr = d3
       .scaleLinear()
       .domain([0, rightKeys.length - 1])
       .range([0, height]);
 
     // Add Y axes
-    var leftAxis = d3
+    const leftAxis = d3
       .axisLeft(yl)
       .tickSize(5)
       .ticks(leftKeys.length)
@@ -95,7 +95,7 @@ export default class SlopeGraph {
         return leftKeys[d];
       });
 
-    var rightAxis = d3
+    const rightAxis = d3
       .axisRight(yr)
       .tickSize(5)
       .ticks(rightKeys.length)
@@ -124,12 +124,12 @@ export default class SlopeGraph {
       .attr('transform', 'translate(' + 10 + ',0)');
 
     // scale for width of lines
-    var w = d3
+    const w = d3
       .scaleLinear()
       .domain([topPairs[topPairs.length - 1][2], topPairs[0][2]])
       .range([3, 15]);
 
-    var div = d3
+    const div = d3
       .select('body')
       .append('div')
       .attr('class', 'tooltip')
@@ -142,7 +142,7 @@ export default class SlopeGraph {
 
     // Add the lines
     topPairs.forEach(function (element) {
-      var value = element[2];
+      let value = element[2];
 
       svg
         .append('path')
@@ -151,11 +151,6 @@ export default class SlopeGraph {
         .attr('stroke', function (d) {
           return d[0].meta.color;
         })
-        //() => {
-        //     var alpha = 0.7; // w(element[2]) / 5;
-        //     var color = "rgba(51, 102, 255," + alpha + ")";
-        //     return color;
-        // })
         .attr('stroke-width', 8) // w(element[2]))
         .attr(
           'd',
@@ -176,17 +171,15 @@ export default class SlopeGraph {
           d3.select(this).attr('stroke', hoverColor).attr('class', 'path-hover');
           div.transition().duration(200).style('opacity', 0.9);
           div.html(() => {
-            var text = `<b> ${header1}:</b> ${d[0].meta.label0} <br>
+            console.log(event);
+            let text = `<b> ${header1}:</b> ${d[0].meta.label0} <br>
                 <b> ${header2}:</b> ${d[0].meta.label1} <br>
                 ${d[0].meta.displayValue.text} ${d[0].meta.displayValue.suffix ? d[0].meta.displayValue.suffix : ''}`;
             return text;
           });
-          var rect = event.target.getBoundingClientRect();
-          var divSize = div.node().getBoundingClientRect();
-
           div
-            .style('left', rect.left + rect.width - divSize.width / 2 + 'px')
-            .style('top', rect.top - divSize.height - 5 + 'px');
+            .style('left', (event.pageX + 15) + 'px')
+            .style('top', (event.pageY - 10) + 'px');
         })
         .on('mouseout', function (event, d) {
           div.transition().duration(500).style('opacity', 0).attr('transform', 'translate(0, 0)');
