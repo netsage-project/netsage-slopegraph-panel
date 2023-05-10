@@ -32,8 +32,8 @@ export default class SlopeGraph {
     const leftKeys = parsedData.leftKeys;
     const rightKeys = parsedData.rightKeys;
     const alpha = parsedData.alpha;
-    const header1 = options.header1;
-    const header2 = options.header2;
+    const header1 = options.leftHeader;
+    const header2 = options.rightHeader;
     const headerColor = theme.visualization.getColorByName(options.headerColor);
     const hoverColor = theme.visualization.getColorByName(options.hoverColor);
     const txtLength = options.txtLength;
@@ -43,7 +43,7 @@ export default class SlopeGraph {
     //let min_value = topPairs[topPairs.length - 1][2]
     //let max_value = topPairs[0][2]
 
-    console.log('rendering Graph...');
+    console.log(options);
 
     let panelWidth = document.getElementById(this.containerID).offsetWidth;
     let panelHeight = document.getElementById(this.containerID).offsetHeight;
@@ -73,10 +73,7 @@ export default class SlopeGraph {
     }
 
     // Add X scale
-    var x = d3
-      .scaleLinear()
-      .domain([0, 1])
-      .range([0, width]);
+    var x = d3.scaleLinear().domain([0, 1]).range([0, width]);
 
     // y scales
     var yl = d3
@@ -94,7 +91,7 @@ export default class SlopeGraph {
       .axisLeft(yl)
       .tickSize(5)
       .ticks(leftKeys.length)
-      .tickFormat(d => {
+      .tickFormat((d) => {
         return leftKeys[d];
       });
 
@@ -102,7 +99,7 @@ export default class SlopeGraph {
       .axisRight(yr)
       .tickSize(5)
       .ticks(rightKeys.length)
-      .tickFormat(d => {
+      .tickFormat((d) => {
         return rightKeys[d];
       });
 
@@ -136,17 +133,22 @@ export default class SlopeGraph {
       .select('body')
       .append('div')
       .attr('class', 'tooltip')
-      .style('opacity', 0);
+      .style('opacity', 0)
+      .style('background-color', theme.colors.background.primary)
+      .style('font-family', theme.typography.fontFamily.sansSerif)
+      .style('color', theme.colors.text.primary)
+      .style('box-shadow', '3px 3px 6px lightgray')
+      .style('padding', '5px');
 
     // Add the lines
-    topPairs.forEach(function(element) {
+    topPairs.forEach(function (element) {
       var value = element[2];
 
       svg
         .append('path')
         .datum(element.coords)
         .attr('fill', 'none')
-        .attr('stroke', function(d) {
+        .attr('stroke', function (d) {
           return d[0].meta.color;
         })
         //() => {
@@ -159,10 +161,10 @@ export default class SlopeGraph {
           'd',
           d3
             .line()
-            .x(function(d) {
+            .x(function (d) {
               return x(d.x);
             })
-            .y(function(d) {
+            .y(function (d) {
               if (d.x == 0) {
                 return yl(d.y);
               } else {
@@ -170,38 +172,24 @@ export default class SlopeGraph {
               }
             })
         )
-        .on('mouseover', function(d) {
-          d3.select(this)
-            .attr('stroke', hoverColor)
-            .attr('class', 'path-hover');
+        .on('mouseover', function (event, d) {
+          d3.select(this).attr('stroke', hoverColor).attr('class', 'path-hover');
+          div.transition().duration(200).style('opacity', 0.9);
+          div.html(() => {
+            var text = `<b> ${header1}:</b> ${d[0].meta.label0} <br>
+                <b> ${header2}:</b> ${d[0].meta.label1} <br>
+                ${d[0].meta.displayValue.text} ${d[0].meta.displayValue.suffix ? d[0].meta.displayValue.suffix : ''}`;
+            return text;
+          });
+          var rect = event.target.getBoundingClientRect();
+          var divSize = div.node().getBoundingClientRect();
+
           div
-            .transition()
-            .duration(200)
-            .style('opacity', 0.9);
-          div
-            .html(() => {
-              var text =
-                '<p><b>' +
-                header1 +
-                ': </b> ' +
-                d[0].meta.label0 +
-                '</p><p><b>' +
-                header2 +
-                ': </b> ' +
-                d[0].meta.label1 +
-                '</p><p>' +
-                d[0].meta.displayValue.text +
-                (d[0].meta.displayValue.suffix ? d[0].meta.displayValue.suffix : '');
-              return text;
-            })
-            .style('left', d3.event.pageX + 'px')
-            .style('top', d3.event.pageY - 28 + 'px');
+            .style('left', rect.left + rect.width - divSize.width / 2 + 'px')
+            .style('top', rect.top - divSize.height - 5 + 'px');
         })
-        .on('mouseout', function(d) {
-          div
-            .transition()
-            .duration(500)
-            .style('opacity', 0);
+        .on('mouseout', function (event, d) {
+          div.transition().duration(500).style('opacity', 0).attr('transform', 'translate(0, 0)');
           d3.select(this).attr('stroke', () => {
             return d[0].meta.color;
           });
