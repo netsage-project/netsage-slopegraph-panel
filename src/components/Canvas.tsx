@@ -9,7 +9,7 @@ export const Canvas = (props) => {
     const id = props.panelId;
     const chart = new SlopeGraph('Chart_' + id);
 
-    chart.renderGraph(props.data, props.options, theme);
+    chart.renderGraph(props.data, props.width, props.height, props.options, theme);
   });
 
   return <div id={'Chart_' + props.panelId} style={{ height: props.height, width: props.width }}></div>;

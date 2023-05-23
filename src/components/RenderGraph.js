@@ -13,7 +13,7 @@ export default class SlopeGraph {
    * @param hoverColor - the color the lines will change to when hovering, set in options panel
    */
 
-  renderGraph(parsedData, options, theme) {
+  renderGraph(parsedData, panelWidth, panelHeight, options, theme) {
     if (!parsedData) {
       return;
     }
@@ -42,11 +42,6 @@ export default class SlopeGraph {
 
     //let min_value = topPairs[topPairs.length - 1][2]
     //let max_value = topPairs[0][2]
-
-    console.log(options);
-
-    let panelWidth = document.getElementById(this.containerID).offsetWidth;
-    let panelHeight = document.getElementById(this.containerID).offsetHeight;
 
     // set the dimensions and margins of the graph
     const margin = { top: 50, right: sideMargin, bottom: 25, left: sideMargin },
@@ -171,7 +166,6 @@ export default class SlopeGraph {
           d3.select(this).attr('stroke', hoverColor).attr('class', 'path-hover');
           div.transition().duration(200).style('opacity', 0.9);
           div.html(() => {
-            console.log(event);
             let text = `<b> ${header1}:</b> ${d[0].meta.label0} <br>
                 <b> ${header2}:</b> ${d[0].meta.label1} <br>
                 ${d[0].meta.displayValue.text} ${d[0].meta.displayValue.suffix ? d[0].meta.displayValue.suffix : ''}`;
