@@ -11,17 +11,15 @@ export function parseData(data, numPairs) {
   // Find the number field and use for values.
   const valueField = data.series.map(series => series.fields.find(field => field.type === 'number'));
   let values = [];
-  valueField[0].values.buffer.map(value => {
+  valueField[0].values.map(value => {
     values.push([value, valueField[0].display(value)]);
   });
 
-  // series[0].fields[x].values.buffer gives data
-  // x = 0: left column terms, 1: right column terms
   var extractedData = data.series[0].fields;
   var transformedData = [];
 
-  for (var i = 0; i < extractedData[0].values.buffer.length; i++) {
-    var row = [extractedData[0].values.buffer[i], extractedData[1].values.buffer[i], values[i][0], values[i][1]];
+  for (var i = 0; i < extractedData[0].values.length; i++) {
+    var row = [extractedData[0].values[i], extractedData[1].values[i], values[i][0], values[i][1]];
     transformedData.push(row);
   }
 
