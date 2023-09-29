@@ -1,4 +1,4 @@
-import { makeColorPalette } from 'colorPalette';
+import { DataFrameView } from '@grafana/data';
 
 /**
  *
@@ -8,42 +8,49 @@ import { makeColorPalette } from 'colorPalette';
  */
 
 export function parseData(data, numPairs) {
-  // Find the number field and use for values.
-  const valueField = data.series.map(series => series.fields.find(field => field.type === 'number'));
-  let values = [];
-  valueField[0].values.map(value => {
-    values.push([value, valueField[0].display(value)]);
-  });
-
-  var extractedData = data.series[0].fields;
-  var transformedData = [];
-
-  for (var i = 0; i < extractedData[0].values.length; i++) {
-    var row = [extractedData[0].values[i], extractedData[1].values[i], values[i][0], values[i][1]];
-    transformedData.push(row);
+  let dataSeries = data.series;
+  if (dataSeries.length == 0) {
+    console.error('no data');
+    return [];
   }
 
-  let sortedPairs = transformedData.sort((a, b) => b[2] - a[2]);
+// extract all data
+  var transformedData = [];
+  dataSeries.forEach((series) => {
+    const thisFrame = new DataFrameView(series);
+    const thisName = thisFrame.data.name ? thisFrame.data.name : thisFrame.data.refId;
+    const thisValueField = thisFrame.data.fields.find((field) => field.type === 'number');
+    let thisValues = [];
+    thisFrame.forEach((row) => {
+      transformedData.push({
+        col1: row[0],
+        col2: row[1],
+        valueRaw: row[thisValueField.name],
+        valueDisplay: thisValueField.display(row[thisValueField.name]),
+      });
+    });
+  });
 
-  // topPairs is set by editor.  Default is 10.
+  // sort all pairs and take top n (set by options panel)
+  let sortedPairs = transformedData.sort((a, b) => b.valueRaw - a.valueRaw);
   let topPairs = sortedPairs.slice(0, Math.min(numPairs, sortedPairs.length));
 
-  // MAKE KEYS
+  // MAKE KEYS and add meta data
   let leftKeys = [];
   let rightKeys = [];
   for (var i in topPairs) {
-    let newLKey = topPairs[i][0];
-    let newRKey = topPairs[i][1];
+    let newLKey = topPairs[i].col1;
+    let newRKey = topPairs[i].col2;
     let lAdded = false;
     let rAdded = false;
     topPairs[i].coords = [
       {
         meta: {
-          value: topPairs[i][2],
-          displayValue: topPairs[i][3],
+          value: topPairs[i].valueRaw,
+          displayValue: topPairs[i].valueDisplay,
           label0: newLKey,
           label1: newRKey,
-          color: topPairs[i][3].color,
+          color: topPairs[i].valueDisplay.color,
         },
         x: 0, // left side
       },
