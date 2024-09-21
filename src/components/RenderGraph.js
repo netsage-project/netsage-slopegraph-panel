@@ -127,12 +127,15 @@ export default class SlopeGraph {
     const div = d3
       .select('body')
       .append('div')
-      .attr('class', 'tooltip')
+      .attr('class', 'slopegraph-tooltip')
       .style('opacity', 0)
       .style('background-color', theme.colors.background.primary)
       .style('font-family', theme.typography.fontFamily.sansSerif)
       .style('color', theme.colors.text.primary)
       .style('box-shadow', '3px 3px 6px lightgray')
+      .style('z-index', '500')
+      .style('position', 'absolute')
+      .style('width', 'fit-content')
       .style('padding', '5px');
 
     // Add the lines
