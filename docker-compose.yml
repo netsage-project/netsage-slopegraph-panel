@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+  builder: &builder
+    restart: always
+    image: netsage/plugin-builder:1.0.0
+    volumes:
+      - .:/plugin
+  builder_build:
+    <<: *builder
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
