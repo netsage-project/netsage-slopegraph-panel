@@ -5,6 +5,7 @@
     "types"
   ],
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "jsx": "react",
     "rootDir": "./src",
     "baseUrl": "./src",

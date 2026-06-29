@@ -3,7 +3,9 @@ import { SlopeGraphOptions } from './types';
 import { SlopeGraphPanel } from './SlopeGraphPanel';
 import { standardOptionsCompat } from 'grafana-plugin-support';
 
-const buildStandardOptions = (): any => {
+// Refactor: removed explicit `: any` return type annotation — TypeScript now infers
+// the return type from standardOptionsCompat, which is more accurate than `any`.
+const buildStandardOptions = () => {
   const options = [FieldConfigProperty.Unit, FieldConfigProperty.Color];
   return standardOptionsCompat(options);
 };
