@@ -41,7 +41,12 @@ export default class SlopeGraph {
   }
 
   // Draws one Y axis. Extracted to remove the near-duplicate left/right axis blocks.
-  static drawAxis(svg, axis, { groupTransform, txtLength, fontSize, textTransform }) {
+  // `keys`/`labelKey`/`hoverColor`/`defaultColor` wire up the axis-label hover highlight:
+  // each tick text is bound (via d3's axis generator) to its index into `keys`, so on hover
+  // we look up the key and recolour every slope line that shares it (labelKey is 'label0'
+  // for the left axis, 'label1' for the right). Truncated tick labels don't matter because
+  // the match uses the bound index, not the rendered (possibly '...'-clipped) text.
+  static drawAxis(svg, axis, { groupTransform, txtLength, fontSize, textTransform, keys, labelKey, hoverColor, defaultColor }) {
     const g = svg.append('g');
     if (groupTransform) {
       g.attr('transform', groupTransform);
@@ -52,7 +57,24 @@ export default class SlopeGraph {
       .call(SlopeGraph.truncateLabel, txtLength)
       // Fixed previously: variable fontSize, not the string literal 'fontSize'.
       .attr('font-size', fontSize)
-      .attr('transform', textTransform);
+      .attr('transform', textTransform)
+      // pointer cursor signals the label is interactive (mirrors the slope lines).
+      .style('cursor', 'pointer')
+      .on('mouseover', function (event, d) {
+        const key = keys[d];
+        svg
+          .selectAll('path.slope-line')
+          .filter((coords) => coords[0].meta[labelKey] === key)
+          .attr('stroke', hoverColor);
+      })
+      .on('mouseout', function (event, d) {
+        const key = keys[d];
+        // Reset only the lines this label highlighted, back to each line's own colour.
+        svg
+          .selectAll('path.slope-line')
+          .filter((coords) => coords[0].meta[labelKey] === key)
+          .attr('stroke', (coords) => coords[0].meta.color || defaultColor);
+      });
   }
 
   // Draws one axis header label. Extracted to remove the duplicate header blocks.
@@ -133,12 +155,24 @@ export default class SlopeGraph {
       .ticks(rightKeys.length)
       .tickFormat((d) => rightKeys[d]);
 
-    SlopeGraph.drawAxis(svg, leftAxis, { txtLength, fontSize, textTransform: `translate(-10,0)` });
+    SlopeGraph.drawAxis(svg, leftAxis, {
+      txtLength,
+      fontSize,
+      textTransform: `translate(-10,0)`,
+      keys: leftKeys,
+      labelKey: 'label0',
+      hoverColor,
+      defaultColor,
+    });
     SlopeGraph.drawAxis(svg, rightAxis, {
       groupTransform: `translate(${width},0)`,
       txtLength,
       fontSize,
       textTransform: `translate(10,0)`,
+      keys: rightKeys,
+      labelKey: 'label1',
+      hoverColor,
+      defaultColor,
     });
 
     // Line generator defined once outside the loop — previously recreated for every
@@ -153,6 +187,9 @@ export default class SlopeGraph {
       svg
         .append('path')
         .datum(element.coords)
+        // 'slope-line' scopes the axis-label hover highlight (drawAxis) to data lines,
+        // excluding the axis domain <path>s.
+        .attr('class', 'slope-line')
         .attr('fill', 'none')
         .attr('stroke', (d) => d[0].meta.color || defaultColor)
         .attr('stroke-width', 8)

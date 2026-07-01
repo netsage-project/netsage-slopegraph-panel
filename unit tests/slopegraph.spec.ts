@@ -152,3 +152,47 @@ test('shows a tooltip on hover and clears it on mouse-out', async ({ panelEditPa
   await page.mouse.move(0, 0);
   await expect(tooltip).toBeHidden();
 });
+
+test('highlights all associated lines when hovering an axis label', async ({ panelEditPage, page, createDataSource }) => {
+  // Integration guard for the axis-label hover-highlight feature. THREE_ROWS shares the
+  // left key 'chicago' across two rows (chicago→denver, chicago→austin), so hovering the
+  // 'chicago' tick must recolour BOTH of those lines to the hover colour while leaving the
+  // third (seattle→austin) untouched.
+  const ds = await createDataSource({
+    type: 'grafana-testdata-datasource',
+    name: 'e2e-testdata-axis-hover',
+  });
+  await panelEditPage.mockQueryDataResponse(queryResponse(THREE_ROWS));
+  await panelEditPage.setVisualization(PANEL);
+  await panelEditPage.datasource.set(ds.name);
+
+  // Settle on the mocked data so the axis ticks/lines belong to THREE_ROWS.
+  await expectSlopeLines(panelEditPage, 3);
+
+  const lines = panelEditPage.panel.locator.locator(SLOPE_LINES);
+  // Read each line's resting stroke so we can detect which ones change on hover, without
+  // hard-coding the theme's default colour.
+  const baseStrokes = await lines.evaluateAll((els) => els.map((el) => el.getAttribute('stroke')));
+
+  // The left axis tick label for the shared key. Axis tick text is inside <g class="tick">;
+  // the SVG renders 'chicago' (no colon) as its own tick — the tooltip uses a colon, so this
+  // targets the tick, not a tooltip.
+  const chicagoTick = panelEditPage.panel.locator.locator('g.tick').filter({ hasText: 'chicago' }).first();
+
+  // Hover the label and assert exactly the two chicago-origin lines changed stroke. Wrapped in
+  // toPass to tolerate a late refresh re-dispatching the hover.
+  await expect(async () => {
+    await chicagoTick.hover({ force: true });
+    const hoverStrokes = await lines.evaluateAll((els) => els.map((el) => el.getAttribute('stroke')));
+    // Two of the three lines (the chicago-origin ones) must have changed colour.
+    const changed = hoverStrokes.filter((s, i) => s !== baseStrokes[i]).length;
+    expect(changed).toBe(2);
+  }).toPass({ timeout: 15000 });
+
+  // Move away → mouseout → the highlighted lines return to their resting strokes.
+  await page.mouse.move(0, 0);
+  await expect(async () => {
+    const resetStrokes = await lines.evaluateAll((els) => els.map((el) => el.getAttribute('stroke')));
+    expect(resetStrokes).toEqual(baseStrokes);
+  }).toPass({ timeout: 5000 });
+});
