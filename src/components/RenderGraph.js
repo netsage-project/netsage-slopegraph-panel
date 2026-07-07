@@ -182,6 +182,18 @@ export default class SlopeGraph {
       .x((d) => x(d.x))
       .y((d) => (d.x === 0 ? yl(d.y) : yr(d.y)));
 
+    // Builds the tooltip payload from the mouse event and the path's bound datum. Defined
+    // once here rather than inline so mouseover and mousemove emit an identical shape.
+    const emitHover = (event, d) =>
+      onHover({
+        x: event.clientX,
+        y: event.clientY,
+        label0: d[0].meta.label0,
+        label1: d[0].meta.label1,
+        displayText: d[0].meta.displayValue.text,
+        suffix: d[0].meta.displayValue.suffix ?? '',
+      });
+
     // Add the lines
     topPairs.forEach(function (element) {
       svg
@@ -197,21 +209,21 @@ export default class SlopeGraph {
         // class on mouseover; same effective behavior (pointer when over a line).
         .style('cursor', 'pointer')
         .attr('d', lineGenerator)
+        // Shared payload builder so mouseover and mousemove stay in sync. clientX/clientY
+        // (viewport-relative), not pageX/pageY (document-relative): VizTooltipContainer renders
+        // position:fixed, so it expects viewport coords. Using pageX/pageY would offset the
+        // tooltip by the scroll amount.
         .on('mouseover', function (event, d) {
           // Keep stroke color change in D3 — it is a direct SVG attribute update.
           // Tooltip rendering is delegated to React via the onHover callback.
           d3.select(this).attr('stroke', hoverColor);
-          onHover({
-            // clientX/clientY (viewport-relative), not pageX/pageY (document-relative):
-            // VizTooltipContainer renders position:fixed, so it expects viewport coords.
-            // Using pageX/pageY would offset the tooltip by the scroll amount.
-            x: event.clientX,
-            y: event.clientY,
-            label0: d[0].meta.label0,
-            label1: d[0].meta.label1,
-            displayText: d[0].meta.displayValue.text,
-            suffix: d[0].meta.displayValue.suffix ?? '',
-          });
+          emitHover(event, d);
+        })
+        // mousemove re-fires onHover with fresh coords so the tooltip tracks the cursor as it
+        // slides along the line, rather than freezing at the entry point. No stroke change
+        // here — the line is already highlighted from mouseover.
+        .on('mousemove', function (event, d) {
+          emitHover(event, d);
         })
         .on('mouseout', function (_, d) {
           d3.select(this).attr('stroke', () => d[0].meta.color || defaultColor);

@@ -8,7 +8,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import SlopeGraph from './RenderGraph.js';
 import '../css/styles.css';
-import { useTheme2, VizTooltipContainer } from '@grafana/ui';
+import { useTheme2, VizTooltipContainer, Portal } from '@grafana/ui';
 import { SlopeGraphOptions, ParsedDataResult, TooltipState } from '../types';
 
 interface CanvasProps {
@@ -48,19 +48,26 @@ export const Canvas = ({ panelId, data, width, height, options }: CanvasProps) =
     <>
       <div id={'Chart_' + panelId} style={{ height, width }} />
       {tooltip && (
-        <VizTooltipContainer position={{ x: tooltip.x, y: tooltip.y }} offset={{ x: 15, y: -10 }}>
-          <div>
+        // Portal renders the tooltip into #grafana-portal-container (document.body), outside
+        // this panel's react-grid-layout wrapper. That wrapper uses a CSS transform, which
+        // would otherwise make VizTooltipContainer's position:fixed resolve relative to the
+        // panel corner instead of the viewport — displacing the tooltip far from the cursor.
+        // Matches Grafana core's own uPlot TooltipPlugin (Portal + VizTooltipContainer).
+        <Portal>
+          <VizTooltipContainer position={{ x: tooltip.x, y: tooltip.y }} offset={{ x: 15, y: -10 }}>
             <div>
-              <b>{options.leftHeader}:</b> {tooltip.label0}
+              <div>
+                <b>{options.leftHeader}:</b> {tooltip.label0}
+              </div>
+              <div>
+                <b>{options.rightHeader}:</b> {tooltip.label1}
+              </div>
+              <div>
+                {tooltip.displayText} {tooltip.suffix}
+              </div>
             </div>
-            <div>
-              <b>{options.rightHeader}:</b> {tooltip.label1}
-            </div>
-            <div>
-              {tooltip.displayText} {tooltip.suffix}
-            </div>
-          </div>
-        </VizTooltipContainer>
+          </VizTooltipContainer>
+        </Portal>
       )}
     </>
   );
