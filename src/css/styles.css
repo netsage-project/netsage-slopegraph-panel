@@ -18,9 +18,6 @@
 #chart-area{
 	height: inherit;
 }
-.path-hover{
-    cursor: pointer;
-}
 
 .axis {
     font-size: 13px;

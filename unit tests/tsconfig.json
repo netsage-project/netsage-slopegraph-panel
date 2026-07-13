@@ -1,0 +1,13 @@
+{
+  // Scopes the unit-test files to a TS project that includes Jest's global types
+  // (describe/it/expect). Without this, the editor type-checks these files outside the
+  // root tsconfig (which only includes src/) and can't find the test-runner globals.
+  // Runtime is unaffected — Jest transforms these with swc regardless of this file.
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "..",
+    "noEmit": true,
+    "types": ["jest", "node"]
+  },
+  "include": ["**/*.ts", "../src/**/*.ts"]
+}
